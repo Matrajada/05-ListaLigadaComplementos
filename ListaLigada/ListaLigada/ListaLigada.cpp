@@ -145,8 +145,12 @@ void inserirElemento()
     }
 }
 
-void excluirElemento(int valor)
+void excluirElemento()
 {
+    int valor;
+    cout << "Digite o valor a excluir: ";
+    cin >> valor;
+
     NO* atual = primeiro;
     NO* anterior = NULL;
 
@@ -156,14 +160,12 @@ void excluirElemento(int valor)
         atual = atual->prox;
     }
 
-    // passou ou acabou
     if (atual == NULL || atual->valor != valor)
     {
         cout << "Nao encontrado\n";
         return;
     }
 
-    // remove
     if (anterior == NULL)
     {
         primeiro = atual->prox;
