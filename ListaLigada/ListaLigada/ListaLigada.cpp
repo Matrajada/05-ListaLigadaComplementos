@@ -6,8 +6,10 @@ struct NO {
 	int valor;
 	NO* prox;
 };
-
+NO* ultimo = NULL;
 NO* primeiro = NULL;
+NO* atual;
+NO* anterior;
 
 // headers
 void menu();
@@ -69,7 +71,7 @@ void menu()
 
 void inicializar()
 {
-	// se a lista j� possuir elementos
+	// se a lista já possuir elementos
 // libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -113,35 +115,65 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
-	NO* novo = (NO*)malloc(sizeof(NO));
-	if (novo == NULL)
-	{
-		return;
-	}
+    NO* novo = (NO*)malloc(sizeof(NO));
+    if (novo == NULL) return;
 
-	cout << "Digite o elemento: ";
-	cin >> novo->valor;
-	novo->prox = NULL;
+    cout << "Digite o elemento: ";
+    cin >> novo->valor;
 
-	if (primeiro == NULL)
-	{
-		primeiro = novo;
-	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
-	}
+    NO* atual = primeiro;
+    NO* anterior = NULL;
+
+    //  anda até achar onde inserir
+    while (atual != NULL && atual->valor < novo->valor)
+    {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    // lista vazia OU inserir no começo
+    if (anterior == NULL)
+    {
+        novo->prox = primeiro;
+        primeiro = novo;
+    }
+    else
+    {
+        // meio ou final
+        anterior->prox = novo;
+        novo->prox = atual;
+    }
 }
 
-void excluirElemento()
+void excluirElemento(int valor)
 {
+    NO* atual = primeiro;
+    NO* anterior = NULL;
 
+    while (atual != NULL && atual->valor < valor)
+    {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    // passou ou acabou
+    if (atual == NULL || atual->valor != valor)
+    {
+        cout << "Nao encontrado\n";
+        return;
+    }
+
+    // remove
+    if (anterior == NULL)
+    {
+        primeiro = atual->prox;
+    }
+    else
+    {
+        anterior->prox = atual->prox;
+    }
+
+    delete atual;
 }
 
 void buscarElemento()
